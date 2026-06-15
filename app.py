@@ -1,9 +1,12 @@
 import streamlit as st
 from supabase import create_client
+<<<<<<< HEAD
 import cv2
 from PIL import Image
 import requests
 import numpy as np
+=======
+>>>>>>> 047d384cdcb13faaa728314e53de48429465bc8e
 
 st.title("WaraWave")
 
@@ -18,6 +21,7 @@ try:
     
     st.success("Conexión exitosa con Supabase")
     st.write(respuesta.data)
+<<<<<<< HEAD
 
     st.write("ingrese la imagen de su reporte")
 
@@ -30,6 +34,8 @@ try:
     edges = cv2.Canny(np.array(image), 100, 200)
     tab = st.tabs(["Imagen"])
     tab.image(image, use_column_width=True)
+=======
+>>>>>>> 047d384cdcb13faaa728314e53de48429465bc8e
     
 except Exception as e:
     st.error(f"Error: {e}")

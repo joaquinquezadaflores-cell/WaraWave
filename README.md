@@ -54,18 +54,18 @@ El proyecto está siendo desarrollado en la *Universidad de Tarapacá (Arica)* d
    Crea y activa tu entorno virtual, y luego instala las librerías necesarias especificadas en el archivo de requerimientos:
    ```bash
    python -m venv venv
-   # En Windows para activar:
+   #Para activar:
    .\venv\Scripts\activate
-   # Instalar requerimientos:
+   #Instalar requerimientos:
    pip install -r requirements.txt
    ```
 
 4. **Configuración secreta de credenciales locales:**
-   Para que la aplicación funcione en tu entorno local sin exponer tus claves en GitHub, crea una carpeta llamada `.streamlit` en la raíz del proyecto y dentro añade el archivo `secrets.toml`:
+   Para que la aplicación funcione en tu entorno local sin exponer públicamente tus claves en GitHub, crea una carpeta llamada `.streamlit` en la raíz del proyecto y dentro añade el archivo `secrets.toml`:
    ```toml
    [connections.supabase]
-   url = "https://supabase.co"
-   key = "tu_llave_anon_legacy_public_key_aqui"
+   url = "https://supabase.co" #texto de ejemplo
+   key = "llave_anon_legacy_public_key"
    ```
    *(Tip: Asegúrate de que el archivo `.gitignore` contenga la línea `.streamlit/secrets.toml` antes de realizar cualquier commit).*
 

@@ -1,41 +1,17 @@
 import streamlit as st
-from supabase import create_client
-<<<<<<< HEAD
-import cv2
-from PIL import Image
-import requests
-import numpy as np
-=======
->>>>>>> 047d384cdcb13faaa728314e53de48429465bc8e
 
-st.title("WaraWave")
+st.title("Hello Streamlit-er 👋")
+st.markdown(
+    """ 
+    This is a playground for you to try Streamlit and have fun. 
 
-try:
-  
-    url = st.secrets["connections"]["supabase"]["url"]
-    key = st.secrets["connections"]["supabase"]["key"]
- 
-    supabase = create_client(url, key)
-
-    respuesta = supabase.table("usuarios").select("*").execute()
+    **There's :rainbow[so much] you can build!**
     
-    st.success("Conexión exitosa con Supabase")
-    st.write(respuesta.data)
-<<<<<<< HEAD
+    We prepared a few examples for you to get started. Just 
+    click on the buttons above and discover what you can do 
+    with Streamlit. 
+    """
+)
 
-    st.write("ingrese la imagen de su reporte")
-
-    uploaded_file = st.file_uploader("Upload an image", type=["jpg", "jpeg", "png"])
-    if uploaded_file:
-        image = Image.open(uploaded_file)
-    else:
-        image = Image.open(requests.get("https://picsum.photos/200/120", stream=True).raw)
-
-    edges = cv2.Canny(np.array(image), 100, 200)
-    tab = st.tabs(["Imagen"])
-    tab.image(image, use_column_width=True)
-=======
->>>>>>> 047d384cdcb13faaa728314e53de48429465bc8e
-    
-except Exception as e:
-    st.error(f"Error: {e}")
+if st.button("Send balloons!"):
+    st.balloons()

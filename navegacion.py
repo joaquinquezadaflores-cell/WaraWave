@@ -28,7 +28,7 @@ def render_navbar():
         unsafe_allow_html=True,
     )
 
-    cols = st.columns(4)
+    cols = st.columns(5)
 
     with cols[0]:
         if st.button("Tablón", use_container_width=True):
@@ -36,18 +36,23 @@ def render_navbar():
             st.rerun()
 
     with cols[1]:
+        if st.button("Oleaje", use_container_width=True):
+            st.session_state["pagina"] = "oleaje"
+            st.rerun()
+            
+    with cols[2]:
         if st.button("Crear", use_container_width=True):
             st.session_state["pagina"] = "crear"
             st.rerun()
 
-    with cols[2]:
+    with cols[3]:
         if st.button("Admin", use_container_width=True):
             st.session_state["pagina"] = "admin"
             st.rerun()
 
-    with cols[3]:
+    with cols[4]:
         if st.button("Salir", use_container_width=True):
             st.session_state.clear()
             st.rerun()
-
+            
     st.markdown("</div>", unsafe_allow_html=True)

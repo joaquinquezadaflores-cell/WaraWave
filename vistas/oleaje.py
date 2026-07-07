@@ -1,19 +1,68 @@
-import requests
+import streamlit as st
 
-def obtener_oleaje(latitud, longitud):
-    url = (
-        f"https://marine-api.open-meteo.com/v1/marine?"
-        f"latitude={latitud}"
-        f"&longitude={longitud}"
-        f"&hourly=wave_height,wave_direction,wave_period"
+from configuracion import supabase
+from oleaje import oleaje, riesgo, recomendacion
+
+
+def pagina_oleaje():
+
+    st.markdown(
+        '<div class="page-title">ESTADO DEL OLEAJE</div>',
+        unsafe_allow_html=True,
     )
-    respuesta = requests.get(url)
 
-    if respuesta.status_code == 200:
-        datos = respuesta.json()
-        return {
-            "altura": datos["hourly"]["wave_height"][0],
-            "direccion": datos["hourly"]["wave_direction"][0],
-            "periodo": datos["hourly"]["wave_period"][0]
-        }
-    return None
+    st.markdown(
+        '<div class="page-subtitle">Condiciones actuales del mar en Arica</div>',
+        unsafe_allow_html=True,
+    )
+
+    st.divider()
+
+    if oleaje is None:
+        st.error(
+            "No fue posible obtener la información del oleaje."
+        )
+        return
+
+    cantidad_reportes = (
+        supabase.table("reportes")
+        .select(
+            "id",
+            count="exact",
+        )
+        .execute()
+        .count
+    )
+
+    col1, col2, col3 = st.columns(3)
+
+    with col1:
+        st.metric(
+            "🌊 Altura de ola",
+            f'{oleaje["altura"]:.2f} m',
+        )
+
+    with col2:
+        st.metric(
+            "🧭 Dirección",
+            f'{oleaje["direccion"]:.0f}°',
+        )
+
+    with col3:
+        st.metric(
+            "⏱️ Período",
+            f'{oleaje["periodo"]:.1f} s',
+        )
+
+    st.divider()
+
+    st.subheader("Nivel de riesgo")
+    st.success(riesgo)
+
+    st.subheader("Recomendación")
+    st.warning(recomendacion)
+
+    st.subheader("Reportes ciudadanos")
+    st.info(
+        f"Actualmente existen **{cantidad_reportes}** reportes registrados."
+    )

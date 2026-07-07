@@ -6,6 +6,7 @@ from navegacion import render_navbar
 from vistas.bienvenida import pagina_bienvenida
 from vistas.autenticacion import pagina_login, pagina_registro
 from vistas.tablon import pagina_tablon
+from vistas.oleaje import pagina_oleaje
 from vistas.crear_reporte import pagina_crear
 from vistas.administracion import pagina_admin
 
@@ -38,6 +39,9 @@ def main():
 
     elif pagina == "tablon":
         pagina_tablon()
+    
+    elif pagina == "oleaje":
+        pagina_oleaje()
 
     elif pagina == "crear":
         pagina_crear()

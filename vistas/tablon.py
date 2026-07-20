@@ -31,18 +31,57 @@ def pagina_tablon():
     if st.session_state.pop("reporte_creado", False):
         st.success("Reporte enviado exitosamente.")
 
+    try:
+        cliente = obtener_supabase()
+
+        respuesta_categorias = (
+            cliente.table("reportes")
+            .select("categoria")
+            .eq("activo", True)
+            .execute()
+        )
+
+        categorias_reportadas = sorted(
+            {
+                reporte["categoria"].strip()
+                for reporte in (respuesta_categorias.data or [])
+                if reporte.get("categoria")
+            }
+        )
+
+        categorias_base = [
+            categoria
+            for categoria in CATEGORIAS
+            if categoria != "Otro"
+        ]
+
+        opciones_categorias = list(
+            dict.fromkeys(categorias_base + categorias_reportadas)
+        )
+
+    except Exception as error:
+        st.error(f"No fue posible cargar las categorías: {error}")
+        return
+
     st.divider()
+
     col1, col2 = st.columns(2)
+
     with col1:
-        filtro_playa = st.selectbox("Playa", ["Todas"] + PLAYAS)
+        filtro_playa = st.selectbox(
+            "Playa",
+            ["Todas"] + PLAYAS,
+        )
+
     with col2:
         filtro_categoria = st.selectbox(
             "Categoría",
-            ["Todas"] + CATEGORIAS,
+            ["Todas"] + opciones_categorias,
         )
 
+
+
     try:
-        cliente = obtener_supabase()
         query = (
             cliente.table("reportes")
             .select("*")

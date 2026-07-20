@@ -3,3 +3,6 @@ venv/
 __pycache__/
 *.pyc
 supabase_config.py
+
+app_funcionando.py
+requirements_funcionando.txt

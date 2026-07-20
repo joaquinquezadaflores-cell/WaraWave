@@ -135,13 +135,7 @@ def pagina_crear():
         ubicacion = st.selectbox("Playa / Ubicación", PLAYAS)
 
     ubicacion_detalle = ""
-    if ubicacion == "Otra":
-        ubicacion_detalle = st.text_input(
-            "Especifica el lugar",
-            placeholder="Ej. sector norte de la desembocadura",
-            max_chars=160,
-        )
-
+  
     descripcion = st.text_area(
         "Descripción del problema",
         placeholder="Describe detalladamente lo que observaste",
@@ -179,9 +173,6 @@ def pagina_crear():
                 return
             if not categoria:
                 st.error("Especifica la categoría.")
-                return
-            if ubicacion == "Otra" and not ubicacion_detalle.strip():
-                st.error("Especifica el lugar del reporte.")
                 return
             if not gps:
                 st.error(

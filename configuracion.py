@@ -19,7 +19,7 @@ PLAYAS_COORDENADAS = {
     "Playa Las Machas": (-18.4219, -70.3105),
 }
 
-PLAYAS = list(PLAYAS_COORDENADAS.keys()) + ["Otra"]
+PLAYAS = list(PLAYAS_COORDENADAS.keys())
 
 ROL_CIUDADANO = "ciudadano"
 ROL_ADMINISTRADOR = "administrador"

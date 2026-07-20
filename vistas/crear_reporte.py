@@ -119,7 +119,18 @@ def pagina_crear():
 
     col1, col2 = st.columns(2)
     with col1:
-        categoria = st.selectbox("Categoría", CATEGORIAS)
+        categoria_seleccionada = st.selectbox("Categoría", CATEGORIAS)
+
+        categoria_personalizada = ""
+
+        if categoria_seleccionada == "Otro":
+            categoria_personalizada = st.text_input(
+                "Especifica la categoría"
+            )
+            categoria = categoria_personalizada.strip()
+        else:
+            categoria = categoria_seleccionada
+
     with col2:
         ubicacion = st.selectbox("Playa / Ubicación", PLAYAS)
 
@@ -165,6 +176,9 @@ def pagina_crear():
         ):
             if not titulo.strip() or not descripcion.strip():
                 st.error("Título y descripción son obligatorios.")
+                return
+            if not categoria:
+                st.error("Especifica la categoría.")
                 return
             if ubicacion == "Otra" and not ubicacion_detalle.strip():
                 st.error("Especifica el lugar del reporte.")

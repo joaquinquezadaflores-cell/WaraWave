@@ -78,6 +78,33 @@ def inject_css():
             font-weight: 600;
         }
 
+        .role-badge {
+            display: inline-block;
+            margin-left: 8px;
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-size: 0.65rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            vertical-align: middle;
+        }
+
+        .role-ciudadano {
+            background-color: #DBEAFE !important;
+            color: #1E40AF !important;
+        }
+
+        .role-administrador {
+            background-color: #FEE2E2 !important;
+            color: #B91C1C !important;
+        }
+
+        .role-autoridad {
+            background-color: #EDE9FE !important;
+            color: #6D28D9 !important;
+        }
+
         .nav-button-area {
             margin: 0.2rem auto 2.2rem auto;
             max-width: 580px;
@@ -246,10 +273,101 @@ def inject_css():
             margin-top: 2px;
         }
 
+
+        .status-badge {
+            margin-left: 6px;
+            background: #E0F2FE !important;
+            color: #075985 !important;
+            border-color: #7DD3FC !important;
+        }
+
+        .risk-card {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            border-radius: 14px;
+            padding: 18px 20px;
+            margin: 12px 0 24px 0;
+            border: 1px solid;
+        }
+
+        .risk-icon {
+            font-size: 2rem;
+            line-height: 1;
+        }
+
+        .risk-label {
+            font-size: 1.15rem;
+            font-weight: 900;
+        }
+
+        .risk-text {
+            margin-top: 3px;
+            font-size: .9rem;
+        }
+
+        .riesgo-tranquilo {
+            background: #ECFDF5;
+            border-color: #6EE7B7;
+        }
+        .riesgo-tranquilo .risk-label,
+        .riesgo-tranquilo .risk-text {
+            color: #065F46 !important;
+        }
+
+        .riesgo-moderado {
+            background: #FFFBEB;
+            border-color: #FCD34D;
+        }
+        .riesgo-moderado .risk-label,
+        .riesgo-moderado .risk-text {
+            color: #92400E !important;
+        }
+
+        .riesgo-fuerte {
+            background: #FFF7ED;
+            border-color: #FDBA74;
+        }
+        .riesgo-fuerte .risk-label,
+        .riesgo-fuerte .risk-text {
+            color: #9A3412 !important;
+        }
+
+        .riesgo-peligroso {
+            background: #FEF2F2;
+            border-color: #FCA5A5;
+        }
+        .riesgo-peligroso .risk-label,
+        .riesgo-peligroso .risk-text {
+            color: #991B1B !important;
+        }
+
         @media (max-width: 760px) {
             .navbar {
                 align-items: flex-start;
                 flex-direction: column;
+                padding: 12px 16px;
+            }
+
+            .block-container {
+                padding-left: 0.8rem;
+                padding-right: 0.8rem;
+                padding-top: 0.4rem;
+            }
+
+            [data-testid="stHorizontalBlock"] {
+                flex-wrap: wrap;
+                gap: 0.5rem;
+            }
+
+            [data-testid="column"] {
+                min-width: 145px;
+                flex: 1 1 145px !important;
+            }
+
+            .risk-card {
+                align-items: flex-start;
+                padding: 15px;
             }
 
             .page-title {

@@ -100,6 +100,29 @@ def _consultar_reportes(cliente, filtros):
 
     return query.execute().data or []
 
+def _resumen_dudas(cliente) -> dict:
+    respuesta = (
+        cliente.table("dudas_reportes")
+        .select("reporte_id, motivo, detalle, fecha")
+        .order("fecha", desc=True)
+        .execute()
+    )
+
+    resumen = {}
+
+    for duda in respuesta.data or []:
+        reporte_id = duda["reporte_id"]
+
+        if reporte_id not in resumen:
+            resumen[reporte_id] = {
+                "total": 0,
+                "dudas": [],
+            }
+
+        resumen[reporte_id]["total"] += 1
+        resumen[reporte_id]["dudas"].append(duda)
+
+    return resumen
 
 def _panel_administrador():
     st.markdown(
@@ -124,15 +147,62 @@ def _panel_administrador():
 
 def _moderacion_reportes(cliente):
     filtros = _filtros_reportes("admin")
+
+    col_dudas, col_orden = st.columns(2)
+
+    with col_dudas:
+        filtro_dudas = st.selectbox(
+            "Marcas de duda",
+            ["Todos", "Con dudas", "Sin dudas"],
+            key="admin_filtro_dudas",
+        )
+
+    with col_orden:
+        orden_reportes = st.selectbox(
+            "Ordenar por",
+            ["Más recientes", "Más dudas primero"],
+            key="admin_orden_dudas",
+        )
+
     if filtros[3] > filtros[4]:
         st.error("La fecha inicial no puede ser posterior a la fecha final.")
         return
 
     try:
         reportes = _consultar_reportes(cliente, filtros)
+        resumen_dudas = _resumen_dudas(cliente)
     except Exception as error:
-        st.error(f"No se pudieron cargar los reportes: {error}")
+        st.error(f"No se pudieron cargar los reportes: {st. error}")
         return
+
+    if filtro_dudas == "Con dudas":
+        reportes = [
+            reporte
+            for reporte in reportes
+            if resumen_dudas.get(
+                reporte["id"],
+                {"total": 0},
+            )["total"] > 0
+        ]
+
+    elif filtro_dudas == "Sin dudas":
+        reportes = [
+            reporte
+            for reporte in reportes
+            if resumen_dudas.get(
+                reporte["id"],
+                {"total": 0},
+            )["total"] == 0
+        ]
+
+    if orden_reportes == "Más dudas primero":
+        reportes.sort(
+            key=lambda reporte: resumen_dudas.get(
+                reporte["id"],
+                {"total": 0},
+            )["total"],
+            reverse=True,
+        )
 
     st.caption(f"Resultados: {len(reportes)}")
     if not reportes:
@@ -141,6 +211,13 @@ def _moderacion_reportes(cliente):
 
     for reporte in reportes:
         reporte_id = reporte["id"]
+
+        info_dudas = resumen_dudas.get(
+            reporte_id,
+            {"total": 0, "dudas": []},
+        )
+        total_dudas = info_dudas["total"]
+
         activo = bool(reporte.get("activo", True))
         estado = "VISIBLE" if activo else "RETIRADO"
 
@@ -160,6 +237,12 @@ def _moderacion_reportes(cliente):
                     """,
                     unsafe_allow_html=True,
                 )
+
+                st.caption(
+                    f"✅ Confirmaciones: {reporte.get('me_sirve', 0)} · "
+                    f"⚠️ Marcas de duda: {total_dudas}"
+                )
+
             with col_accion:
                 etiqueta = "Retirar del tablón" if activo else "Restaurar"
                 if st.button(
@@ -184,6 +267,20 @@ def _moderacion_reportes(cliente):
             with st.expander("Revisar contenido"):
                 mostrar_detalle_reporte(reporte)
 
+                if total_dudas > 0:
+                    st.divider()
+                    st.markdown("#### ⚠️ Motivos de duda")
+
+                    for duda in info_dudas["dudas"]:
+                        motivo = duda.get("motivo", "Sin motivo")
+                        detalle = duda.get("detalle")
+
+                        st.markdown(f"- **{motivo}**")
+
+                        if detalle:
+                            st.caption(detalle)
+                else:
+                    st.info("Este reporte no ha sido marcado como dudoso.")
 
 def _gestion_usuarios(cliente):
     st.markdown("#### Usuarios registrados")

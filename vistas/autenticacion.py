@@ -24,10 +24,7 @@ def pagina_login():
     )
 
     if st.session_state.pop("registro_exitoso", False):
-        st.success(
-            "Cuenta creada. Revisa tu correo si Supabase solicita "
-            "confirmación y luego inicia sesión."
-        )
+        st.success("Cuenta creada correctamente. Ya puedes iniciar sesión.")
 
     correo = st.text_input(
         "Correo electrónico",
@@ -57,7 +54,7 @@ def pagina_login():
                     cliente.auth.sign_out()
                     st.error(
                         "La cuenta existe, pero falta su perfil en la tabla "
-                        "usuarios. Ejecuta database_actualizacion.sql."
+                        "usuarios."
                     )
                     return
 

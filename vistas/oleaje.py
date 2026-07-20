@@ -86,9 +86,11 @@ def pagina_oleaje():
 
     hora = condiciones.get("hora")
     st.info(
-        f"Datos para **{playa}**. Hora del modelo: **{hora or 'sin datos'}**. "
-        "La aplicación renueva la consulta automáticamente cada hora."
-    )
+    f"Condiciones marítimas estimadas para el sector de {playa_seleccionada}. "
+    f"Hora del modelo: {datos['hora']}. "
+    "La aplicación renueva la consulta automáticamente cada hora."
+    ) 
+    
     st.caption(
         "Fuente: Open-Meteo Marine API. Los modelos costeros son orientativos "
         "y no reemplazan avisos de la Armada, autoridades o salvavidas."

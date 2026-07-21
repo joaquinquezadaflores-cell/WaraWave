@@ -151,7 +151,17 @@ def pagina_crear():
             f"Videos: máximo {MAX_VIDEO_MB} MB."
         ),
     )
-
+    if archivo is not None:
+        tipo_archivo = archivo.type.split('/')[0]
+        
+        st.markdown("<p style='font-size: 14px; color: #666;'>Vista previa:</p>", unsafe_allow_html=True)
+        
+        if tipo_archivo == "image":
+            st.image(archivo, use_container_width=True)
+        elif tipo_archivo == "video":
+            st.video(archivo)
+            
+        st.divider()
     _guardar_ubicacion_gps()
     gps = st.session_state.get("gps_reporte")
 

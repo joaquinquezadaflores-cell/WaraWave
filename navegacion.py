@@ -52,7 +52,7 @@ def render_navbar():
         f'</div>'
     )
 
-    st.html(navbar_html)
+    st.markdown(navbar_html, unsafe_allow_html=True)
 
     if pagina in ("bienvenida", "login", "registro"):
         return

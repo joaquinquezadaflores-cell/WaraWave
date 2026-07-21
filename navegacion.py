@@ -24,6 +24,7 @@ def render_navbar():
     pagina = st.session_state.get("pagina", "bienvenida")
     usuario = texto_seguro(st.session_state.get("usuario_nombre", ""))
     rol = st.session_state.get("usuario_rol", ROL_CIUDADANO)
+
     etiqueta_rol, clase_rol = ETIQUETAS_ROL.get(
         rol,
         ETIQUETAS_ROL[ROL_CIUDADANO],
@@ -35,21 +36,23 @@ def render_navbar():
         else ""
     )
 
-    st.markdown(
-        f"""
-        <div class="navbar">
-            <div>
-                <div class="brand">WARA WAVE</div>
-                <div class="tagline">Por playas más seguras</div>
-            </div>
-            <div>
-                <span class="nav-user">{usuario}</span>
-                {badge_html}
-            </div>
-        </div>
-        """,
-        unsafe_allow_html=True,
+    navbar_html = (
+        f'<div class="navbar">'
+        f'<div class="brand-row">'
+        f'<div class="brand-mark">🌊</div>'
+        f'<div class="brand-copy">'
+        f'<div class="brand">WARA WAVE</div>'
+        f'<div class="tagline">Información ciudadana para playas más seguras</div>'
+        f'</div>'
+        f'</div>'
+        f'<div class="nav-profile">'
+        f'<span class="nav-user">{usuario}</span>'
+        f'{badge_html}'
+        f'</div>'
+        f'</div>'
     )
+
+    st.html(navbar_html)
 
     if pagina in ("bienvenida", "login", "registro"):
         return
@@ -59,10 +62,10 @@ def render_navbar():
     columnas = st.columns(cantidad)
 
     botones = [
-        ("Tablón", "tablon"),
-        ("Historial", "historial"),
-        ("Oleaje", "oleaje"),
-        ("Crear", "crear"),
+        ("📰 Tablón", "tablon"),
+        ("🗂️ Historial", "historial"),
+        ("🌊 Oleaje", "oleaje"),
+        ("＋ Crear", "crear"),
     ]
 
     for indice, (etiqueta, destino) in enumerate(botones):
@@ -76,8 +79,14 @@ def render_navbar():
                 _ir_a(destino)
 
     siguiente = 4
+
     if tiene_acceso_admin:
-        etiqueta = "Auditoría" if rol == ROL_AUTORIDAD else "Admin"
+        etiqueta = (
+            "📊 Auditoría"
+            if rol == ROL_AUTORIDAD
+            else "🛡️ Admin"
+        )
+
         with columnas[siguiente]:
             if st.button(
                 etiqueta,
@@ -86,9 +95,10 @@ def render_navbar():
                 type="primary" if pagina == "admin" else "secondary",
             ):
                 _ir_a("admin")
+
         siguiente += 1
 
     with columnas[siguiente]:
-        if st.button("Salir", use_container_width=True):
+        if st.button("↪ Salir", use_container_width=True):
             limpiar_sesion()
             st.rerun()

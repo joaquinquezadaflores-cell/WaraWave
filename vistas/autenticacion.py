@@ -17,7 +17,10 @@ def _cargar_perfil(cliente, auth_id: str):
 
 def pagina_login():
     st.markdown('<div class="auth-wrap">', unsafe_allow_html=True)
-    st.markdown("## Iniciar sesión")
+    st.markdown(
+        '<div class="auth-heading">Bienvenido de nuevo</div>',
+        unsafe_allow_html=True,
+    )
     st.markdown(
         '<div class="auth-sub">Ingresa tus credenciales para continuar</div>',
         unsafe_allow_html=True,
@@ -92,7 +95,10 @@ def pagina_login():
 
 def pagina_registro():
     st.markdown('<div class="auth-wrap">', unsafe_allow_html=True)
-    st.markdown("## Registrarse")
+    st.markdown(
+        '<div class="auth-heading">Crea tu cuenta</div>',
+        unsafe_allow_html=True,
+    )
     st.markdown(
         '<div class="auth-sub">Crea tu cuenta para reportar incidentes</div>',
         unsafe_allow_html=True,

@@ -1,3 +1,4 @@
+import pandas as pd
 import streamlit as st
 
 from configuracion import CATEGORIAS, PLAYAS, obtener_supabase
@@ -131,6 +132,24 @@ def pagina_tablon():
     if not reportes:
         st.info("No hay reportes visibles para los filtros seleccionados.")
         return
+
+    df = pd.DataFrame(reportes)[["fecha", "ubicacion", "categoria", "titulo", "me_sirve"]]
+    
+    # Renombramos la columna para que el Excel sea profesional
+    df = df.rename(columns={"me_sirve": "confirmaciones"})
+    
+    # Convertimos los datos a formato CSV
+    csv = df.to_csv(index=False).encode('utf-8')
+    
+    # Generamos el botón de descarga en la interfaz
+    st.download_button(
+        label="📊 Descargar datos abiertos (CSV)",
+        data=csv,
+        file_name="warawave_datos_abiertos.csv",
+        mime="text/csv",
+        use_container_width=True
+    )
+    st.divider()
 
     usuario_id = st.session_state["usuario_id"]
     for reporte in reportes:
